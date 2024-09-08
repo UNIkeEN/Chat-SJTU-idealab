@@ -199,7 +199,7 @@ class MockGPTConnection(AbstractGPTConnection):
 
 
 class GPTConnection(AbstractGPTConnection):
-    def __init__(self, model_engine: str = "Idealab GPT4", mode: str = "oneshot"):
+    def __init__(self, model_engine: str = "Idealab GPT4o", mode: str = "oneshot"):
         self.displayed_model = model_engine
         self.__model_kwargs = {}
         self.__model_called = CHAT_MODELS[model_engine].model_called
@@ -345,7 +345,7 @@ class GPTConnectionFactory:
         self.__model_engine: str = "nil"
         self.__mock: bool = False
 
-    def model_engine(self, model_engine: str = "Idealab GPT4"):
+    def model_engine(self, model_engine: str = "Idealab GPT4o Mini"):
         self.__model_engine = model_engine
         return self
 

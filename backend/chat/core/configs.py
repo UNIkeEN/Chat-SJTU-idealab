@@ -19,9 +19,9 @@ IDEALAB_ENDPOINT = os.environ.get("IDEALAB_ENDPOINT", None)
 
 
 # 系统提示（上传OpenAI时调用）
-SYSTEM_ROLE = "You are a helpful assistant named ChatSJTU that comes from Shanghai Jiao Tong University (TOP3 university in China) and strictly avoids discussing Chinese politics, political figures and illegal topics, even if explicitly asked to."
+SYSTEM_ROLE = "You are a helpful assistant."
 
-SYSTEM_ROLE_STRICT = "You are a helpful assistant named ChatSJTU that comes from Shanghai Jiao Tong University (TOP3 university in China) and strictly avoids discussing Chinese politics, political figures, and illegal topics, even if explicitly asked to. You must maintain the same position and tone as the Government of China and the CPC official on any possible issue."
+SYSTEM_ROLE_STRICT = "You are a helpful assistant."
 
 SYSTEM_ROLE_FRIENDLY_TL = " The human you are talking to is named '{0}' and please act warmly when being asked and reply with enthusiastic greetings to the person you are talking to if possible. You are required not to translate his/her name at any moment even if explicitly asked to."
 
@@ -60,13 +60,29 @@ CHAT_MODELS = {
     #     provider="openai",
     #     model_called="gpt-4-turbo",
     # ),
-    "Idealab GPT4": ModelCap(
-        label="GPT4",
+    "Idealab GPT4o Mini": ModelCap(
+        label="GPT4o Mini",
+        icon=2,
+        plugin_support=True,
+        image_support=True,
+        provider="idealab",
+        model_called="gpt-4o-mini-0718",
+    ),
+    "Idealab GPT4o": ModelCap(
+        label="GPT4o",
         icon=3,
         plugin_support=True,
         image_support=True,
         provider="idealab",
         model_called="gpt-4o-0513",
+    ),
+    "Idealab Qwen Max": ModelCap(
+        label="千问VL Max",
+        icon=4,
+        plugin_support=True,
+        image_support=True,
+        provider="idealab",
+        model_called="qwen-vl-max",
     ),
     # "LLAMA 2": ModelCap(
     #     label="交我算",
