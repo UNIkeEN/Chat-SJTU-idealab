@@ -28,7 +28,7 @@ function ChatBox({ onChangeSessionInfo, onChangeComponent, curRightComponent}) {
     const [input, setInput] = useState('');
     const [rows, setRows] = useState(3);        //textarea行数
     const [textareaWidth, setTextareaWidth] = useState(0);
-    const [selectedModel, setSelectedModel] = useState("GPT 3.5");  //选中模型
+    const [selectedModel, setSelectedModel] = useState("Idealab GPT4");  //选中模型
     const [isWaiting, setIsWaiting] = useState(false);      //是否正在加载
     const [retryMessage, setRetryMessage] = useState(null);
     const [qcmdOptions, setQcmdOptions] = useState([]);     //按输入筛选快捷命令

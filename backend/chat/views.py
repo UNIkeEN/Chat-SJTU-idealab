@@ -200,7 +200,7 @@ async def __build_gpt_request(
 
     msg: str = base64.b64decode(request.data.get("message")).decode()
     model_engine: str = request.data.get("model")
-    images = request.data.get("image_urls", []) if model_engine == "OpenAI GPT4" else []
+    images = request.data.get("image_urls", []) if model_engine == "Idealab GPT4" else []
     plugins = request.data.get("plugins")
     plugins: list[str] = plugins if plugins is not None else []
 

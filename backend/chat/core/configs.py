@@ -13,8 +13,10 @@ OPENAI_MOCK = False
 AZURE_OPENAI_KEY = os.environ.get("AZURE_OPENAI_KEY", None)
 AZURE_OPENAI_ENDPOINT = os.environ.get("AZURE_OPENAI_ENDPOINT", None)
 
-# 微调llama2 Key
-LLAMA2_ENDPOINT = os.environ.get("LLAMA2_ENDPOINT", None)
+# Idealab Key
+IDEALAB_KEY = os.environ.get("IDEALAB_KEY", None)
+IDEALAB_ENDPOINT = os.environ.get("IDEALAB_ENDPOINT", None)
+
 
 # 系统提示（上传OpenAI时调用）
 SYSTEM_ROLE = "You are a helpful assistant named ChatSJTU that comes from Shanghai Jiao Tong University (TOP3 university in China) and strictly avoids discussing Chinese politics, political figures and illegal topics, even if explicitly asked to."
@@ -42,36 +44,36 @@ class ModelCap:
 
 
 CHAT_MODELS = {
-    "GPT 3.5": ModelCap(
-        label="GPT 3.5",
-        icon=1,
-        plugin_support=True,
-        image_support=False,
-        provider="azure",
-        model_called="gpt-35-turbo-16k",
-    ),
-    "GPT 4": ModelCap(
-        label="GPT 4",
-        icon=2,
-        plugin_support=True,
-        image_support=False,
-        provider="openai",
-        model_called="gpt-4-turbo",
-    ),
-    "GPT 4v": ModelCap(
-        label="GPT 4v",
+    # "GPT 3.5": ModelCap(
+    #     label="GPT 3.5",
+    #     icon=1,
+    #     plugin_support=True,
+    #     image_support=False,
+    #     provider="azure",
+    #     model_called="gpt-35-turbo-16k",
+    # ),
+    # "GPT 4": ModelCap(
+    #     label="GPT 4",
+    #     icon=2,
+    #     plugin_support=True,
+    #     image_support=False,
+    #     provider="openai",
+    #     model_called="gpt-4-turbo",
+    # ),
+    "Idealab GPT4": ModelCap(
+        label="GPT4",
         icon=3,
         plugin_support=True,
         image_support=True,
-        provider="openai",
-        model_called="gpt-4-vision-preview",
+        provider="idealab",
+        model_called="gpt-4o-0513",
     ),
-    "LLAMA 2": ModelCap(
-        label="交我算",
-        icon=4,
-        plugin_support=False,
-        image_support=False,
-        provider="llama2",
-        model_called="llama2",
-    ),
+    # "LLAMA 2": ModelCap(
+    #     label="交我算",
+    #     icon=4,
+    #     plugin_support=False,
+    #     image_support=False,
+    #     provider="llama2",
+    #     model_called="llama2",
+    # ),
 }

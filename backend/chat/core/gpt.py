@@ -199,13 +199,14 @@ class MockGPTConnection(AbstractGPTConnection):
 
 
 class GPTConnection(AbstractGPTConnection):
-    def __init__(self, model_engine: str = "GPT 3.5", mode: str = "oneshot"):
+    def __init__(self, model_engine: str = "Idealab GPT4", mode: str = "oneshot"):
         self.displayed_model = model_engine
         self.__model_kwargs = {}
         self.__model_called = CHAT_MODELS[model_engine].model_called
         self.__setup_gpt_environment = getattr(
             self, "_setup_" + CHAT_MODELS[model_engine].provider
         )
+        # self.client = openai.AsyncClient()
 
     def _setup_azure(self):
         openai.api_type = "azure"
@@ -223,11 +224,16 @@ class GPTConnection(AbstractGPTConnection):
         openai.api_version = None
         self.__model_kwargs["model"] = self.__model_called
 
-    def _setup_llama2(self):
-        openai.api_type = "open_ai"
+    def _setup_idealab(self):
+        openai.api_type = "openai"
         openai.organization = None
-        openai.api_key = "llama2"
-        openai.api_base = LLAMA2_ENDPOINT
+        openai.api_key = IDEALAB_KEY
+        openai.base_url = IDEALAB_ENDPOINT
+        openai.api_version = None
+        # openai.default_headers = {
+        #     'Authorization': f'Bearer {IDEALAB_KEY}',
+        #     'Cookie': os.environ.get("IDEALAB_COOKIE", None)
+        # }
         self.__model_kwargs["model"] = self.__model_called
 
     def __setup_plugins(self, selected_plugins: list[FCSpec]):
@@ -265,7 +271,7 @@ class GPTConnection(AbstractGPTConnection):
     @tenacity.retry(
         stop=tenacity.stop_after_attempt(3),
         wait=tenacity.wait_random_exponential(min=1, max=5),
-        retry=tenacity.retry_if_exception_type(openai.error.OpenAIError),
+        retry=tenacity.retry_if_exception_type(openai.OpenAIError),
         before=tenacity.before_log(logger, logging.DEBUG),
         reraise=True,
     )
@@ -276,23 +282,23 @@ class GPTConnection(AbstractGPTConnection):
         max_tokens: int,
     ):
         try:
-            response = await openai.ChatCompletion.acreate(
+            response = openai.chat.completions.create(
                 messages=msg,
                 temperature=temperature,
                 max_tokens=max_tokens,
                 **self.__model_kwargs,
-            )
+            ).to_dict()
             assert isinstance(response, dict)
             return response
-        except openai.error.InvalidRequestError as e:
+        except openai.BadRequestError as e:
             logger.error(e)
             raise ChatError("请求失败，输入可能过长，请前往“偏好设置”减少“附带历史消息数”或缩短输入")
 
-        except openai.error.AuthenticationError as e:
+        except openai.AuthenticationError as e:
             logger.error(e)
             raise ChatError("验证失败，请联系管理员")
 
-        except openai.error.OpenAIError as _:
+        except openai.OpenAIError as _:
             raise
 
         except Exception as e:
@@ -322,14 +328,14 @@ class GPTConnection(AbstractGPTConnection):
 
         try:
             response = await self.gpt(msg)
-            assert isinstance(response, dict)
+            # assert isinstance(response, dict)
             return await self.__post_interact(msg, response)
 
-        except openai.error.RateLimitError as e:
+        except openai.RateLimitError as e:
             logger.error(e)
             raise ChatError("API受限，请稍作等待后重试，若一直受限请联系管理员")
 
-        except openai.error.OpenAIError as e:
+        except openai.OpenAIError as e:
             logger.error(e)
             raise ChatError("API或网络错误，请稍作等待后重试")
 
@@ -339,7 +345,7 @@ class GPTConnectionFactory:
         self.__model_engine: str = "nil"
         self.__mock: bool = False
 
-    def model_engine(self, model_engine: str = "Azure GPT3.5"):
+    def model_engine(self, model_engine: str = "Idealab GPT4"):
         self.__model_engine = model_engine
         return self
 
