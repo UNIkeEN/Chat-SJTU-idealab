@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$ggno&vd4x%9nv1j1cz-rr=gu$^38g&snc5^153en*k&bxiv28'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 if os.environ.get('ALLOWED_HOSTS', None):
@@ -196,7 +196,7 @@ MEDIA_ROOT = 'user_content/'
 #     'http://localhost:3000',
 # ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
