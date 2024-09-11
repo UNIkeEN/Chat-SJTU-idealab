@@ -21,6 +21,8 @@ from typing import Union, Optional
 import logging
 import functools
 import time
+import base64
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -102,12 +104,31 @@ class InputListContentFactory:
 
         if self.__model_cap.image_support and len(image_urls) != 0:
             content = [{"type": "text", "text": text}]
-            content.extend(
-                [
-                    {"type": "image_url", "image_url": {"url": image_url}}
-                    for image_url in image_urls
-                ]
-            )
+            # content.extend(
+            #     [
+            #         {"type": "image_url", "image_url": {"url": image_url}}
+            #         for image_url in image_urls
+            #     ]
+            # )
+            
+            # 非公网服务器使用 base64      
+            for image_url in image_urls:
+                file_name = os.path.basename(image_url)
+                file_path = os.path.join(os.getcwd(), "user_content", file_name)
+                print(file_path)
+                try:
+                    with open(file_path, "rb") as image_file:
+                        encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+                        # 构建 base64 URL
+                        base64_url = f"data:image/{file_name.split('.')[-1]};base64,{encoded_string}"
+                    content.extend(
+                        [
+                            {"type": "image_url", "image_url": {"url": base64_url}}
+                        ]
+                    )
+                except FileNotFoundError:
+                    print(f"File {file_name} not found in user-content dir")
+                    
             return content
         else:
             return text

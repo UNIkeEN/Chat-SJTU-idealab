@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import os
 
 # 学生账户每日限制
-STUDENT_LIMIT = 20
+STUDENT_LIMIT = 99999
 
 # OpenAI Key
 OPENAI_KEY = os.environ.get("OPENAI_KEY", None)
@@ -80,7 +80,7 @@ CHAT_MODELS = {
         label="千问VL Max",
         icon=4,
         plugin_support=True,
-        image_support=True,
+        image_support=False,
         provider="idealab",
         model_called="qwen-vl-max",
     ),

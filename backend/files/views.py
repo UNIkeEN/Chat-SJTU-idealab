@@ -9,6 +9,7 @@ from PIL import Image
 from io import BytesIO
 import hashlib
 import time
+import base64
 
 from .models import UserFile
 
@@ -34,12 +35,14 @@ def files_upload(request):
             longer_edge = max(img.width, img.height)
             if longer_edge > 1280:
                 img.thumbnail((1280, 1280))
-                original_format = img.format
-
-                output = BytesIO()
-                img.save(output, format=original_format, quality=85)
-                output.seek(0)
-                uploaded_file = ContentFile(output.read(), name=uploaded_file.name)
+                
+            original_format = img.format
+            output = BytesIO()
+            img.save(output, format=original_format, quality=85)
+            output.seek(0)
+            image_bytes = output.read()
+            # base64_encoded_image = base64.b64encode(image_bytes).decode('utf-8')
+            uploaded_file = ContentFile(image_bytes, name=uploaded_file.name)
         except IOError:
             return JsonResponse({'status': 'error', 'message': '图像文件可能损坏'}, status=400)
 
@@ -53,5 +56,11 @@ def files_upload(request):
         file_instance = UserFile(file_name=encrypted_file_name, user=request.user)
         file_instance.save()
 
+        # mime_type = uploaded_file.name.split('.')[-1].lower()
+        # if mime_type == 'jpg':
+        #     mime_type = 'jpeg'
+        # base64_image = f"data:image/{mime_type};base64,{base64_encoded_image}"
+        # return JsonResponse({'status': 'success', 'url': base64_image})
+        
         return JsonResponse({'status': 'success', 'url': uploaded_file_url})
     return JsonResponse({'status': 'error', 'message': '未知错误'}, status=400)

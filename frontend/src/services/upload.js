@@ -22,8 +22,11 @@ export const uploadFile = async (options) => {
             },
         });
         
-        //拼接baseurl
+        // 拼接baseurl
         file.url = `${document.baseURI}user_content${response.data.url}`;
+
+        // 如后端传回base64
+        // file.url = response.data.url;
     
         onSuccess(null, file);
     } catch (error) {

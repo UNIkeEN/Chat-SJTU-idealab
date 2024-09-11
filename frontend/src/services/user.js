@@ -29,8 +29,8 @@ export async function jAccountLogin(basePath, next, params = "") {
         redirect_uri += next ? "&" : "?";
         redirect_uri += params;
     }
-    // window.location.href = `/oauth/jaccount/login/?redirect_uri=${redirect_uri}`;
-    window.location.href = `http://localhost:8000/oauth/jaccount/login/?redirect_uri=${redirect_uri}`;
+    window.location.href = `/oauth/jaccount/login/?redirect_uri=${redirect_uri}`;
+    // window.location.href = `http://localhost:8000/oauth/jaccount/login/?redirect_uri=${redirect_uri}`;
 }
 
 //获取用户信息
